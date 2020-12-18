@@ -17,17 +17,19 @@ const [messages] = useCollectionData(query, {idField:'id'});
             <div>
                 {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg}/>)}
             </div>
+            <div></div>
         </div>
     )
 }
 
-function ChatMessage (props) {
-const {text, id } = props.message;
+function ChatMessage ({message}) {
+
+const {text, uid } = message;
 
     return (
-        <p>
-{text}
-        </p>
+        <h1>
+            {text}
+        </h1>
     )
 }
 

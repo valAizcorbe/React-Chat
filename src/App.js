@@ -22,13 +22,13 @@ const firestore = firebase.firestore();
 
 function App() {
 
-  const user = useAuthState(auth)
+  const [user] = useAuthState(auth)
   
   return (
     <div className="App">
   
       <section>
-        {user ? <ChatRoom user={user}/> : <SignIn/> }
+        {user ? <ChatRoom /> : <SignIn/>}
       </section>
     </div>
   );
@@ -50,19 +50,18 @@ function SignIn () {
       )
   }
 
-function SignOut (){
 
+function SignOut (){
 let signOut = () => {
   auth.signOut()
 
 }
-
   return auth.currentUser && (
     <button onClick={signOut}>Sign Out</button>
   )
 }
 
-function ChatRoom ({user}) {
+function ChatRoom () {
   const messagesRef = firestore.collection('messages');
   const query = messagesRef.orderBy('createdAt').limit(25);
   const [messages] = useCollectionData(query, {idField: 'id' });

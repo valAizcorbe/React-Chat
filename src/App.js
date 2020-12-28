@@ -1,10 +1,10 @@
 import React, {useState, useRef} from 'react';
-import './App.css';
 import firebase from 'firebase/app';
 import 'firebase/auth'
 import 'firebase/firestore'
 import {useCollectionData} from 'react-firebase-hooks/firestore'
 import {useAuthState} from 'react-firebase-hooks/auth'
+import {Body, Button, Sign, Header, Logo, MessageSection, Footer, Form, Img, Input} from './Style-App'
 
 
 firebase.initializeApp({
@@ -25,12 +25,11 @@ function App() {
   const [user] = useAuthState(auth)
   
   return (
-    <div className="App">
-  
-      <section>
+    <Body>
+     
         {user ? <ChatRoom /> : <SignIn/>}
-      </section>
-    </div>
+      
+    </Body>
   );
 
 }
@@ -44,9 +43,9 @@ function SignIn () {
   }
   
       return(
-          <div>
-              <button onClick={SignInWithGoogle}>Sign In with Google</button>
-          </div>
+          <Sign>
+              <Button onClick={SignInWithGoogle}>Sign In with Google</Button>
+          </Sign>
       )
   }
 
@@ -85,18 +84,22 @@ function ChatRoom () {
   
   
       return(
-          <div>
-            <header><SignOut/></header>
+          <Body>
+            <Header><Logo>Welcome!</Logo><SignOut/></Header>
 
-            <div>{messages && messages.map(msg => <ChatMessage key={msg.id} message={msg}/>)}</div>
+  <MessageSection>{messages && messages.map(msg => <ChatMessage key={msg.id} message={msg}/>)}<div ref={dummy}></div></MessageSection>
+
+            
               
-  <div ref={dummy}></div>
-              
-              <form onSubmit={sendMessage}>
-          <input value={formValue} onChange={(e) => setFormValue(e.target.value)}/>
+  <Footer>
+    <Form onSubmit={sendMessage}>
+          <Input value={formValue} onChange={(e) => setFormValue(e.target.value)}/>
           <button>Send</button>
-      </form>
-          </div>
+      </Form>
+      </Footer>
+              
+              
+          </Body>
       )
   }
   
@@ -106,14 +109,11 @@ function ChatRoom () {
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
   
       return (
-          <p className={`message${messageClass}`}>
-           <img src={photoURL}/>   
-              <h1>
-          {text}
-      </h1>
-      
-      
-      </p>
+          <div className={`message${messageClass}`}>
+           <Img src={photoURL}/>   
+              <p> {text} </p>
+  
+      </div>
           
       )
   }

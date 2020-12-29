@@ -4,7 +4,8 @@ import 'firebase/auth'
 import 'firebase/firestore'
 import {useCollectionData} from 'react-firebase-hooks/firestore'
 import {useAuthState} from 'react-firebase-hooks/auth'
-import {Body, Button, Sign, Header, Logo, MessageSection, Footer, Form, Img, Input} from './Style-App'
+import {Body, Button, Sign, Header, Logo, MessageSection, Footer, Form, Img, Input, Icon, Bubble, Sent, Received, BubbleR, SButton, Chat} from './Style-App'
+import {IoMdSend} from 'react-icons/io'
 
 
 firebase.initializeApp({
@@ -56,7 +57,7 @@ let signOut = () => {
 
 }
   return auth.currentUser && (
-    <button onClick={signOut}>Sign Out</button>
+    <SButton onClick={signOut}>Sign Out</SButton>
   )
 }
 
@@ -84,34 +85,40 @@ function ChatRoom () {
   
   
       return(
-          <Body>
-            <Header><Logo>Welcome!</Logo><SignOut/></Header>
+          <Chat>
+            <Header><Logo>Chat with Vali </Logo><SignOut/></Header>
 
-  <MessageSection>{messages && messages.map(msg => <ChatMessage key={msg.id} message={msg}/>)}<div ref={dummy}></div></MessageSection>
+  <MessageSection>
+    
+    {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg}/>)}<div ref={dummy}></div></MessageSection>
 
             
               
   <Footer>
     <Form onSubmit={sendMessage}>
           <Input value={formValue} onChange={(e) => setFormValue(e.target.value)}/>
-          <button>Send</button>
+          <Icon><IoMdSend/></Icon>
       </Form>
       </Footer>
               
               
-          </Body>
+          </Chat>
       )
   }
   
    function ChatMessage (props) {
   
   const {text, uid, photoURL} = props.message;
-  const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
+  const messageClass = uid === auth.currentUser.uid;
   
       return (
-          <div className={`message${messageClass}`}>
-           <Img src={photoURL}/>   
-              <p> {text} </p>
+          <div>
+{
+  messageClass ? <Sent><Img src={photoURL}/>   
+              <Bubble> {text} </Bubble></Sent> : <Received><Img src={photoURL}/>   
+              <BubbleR> {text} </BubbleR></Received>
+}
+           
   
       </div>
           
